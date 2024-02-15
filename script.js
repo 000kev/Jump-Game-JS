@@ -44,8 +44,14 @@ const duck = () => {
     }
 }
 
+const spawn_timer = () => {
+   const min = 3001
+   const max = 5000
+   const random_time = (Math.floor(Math.random() * (max - min)) + min)
+    setInterval(spawn_enemy, random_time)
+}
 
-setInterval(spawn_enemy, 5000)
+spawn_timer()
 
 addEventListener("keydown", (event) => {
     if (event.code == "Space"  && gameOn == true || event.code == "ArrowUp"  && gameOn == true) {

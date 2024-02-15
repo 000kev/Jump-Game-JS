@@ -29,6 +29,7 @@
 
 .duck{
     height: 5vh;
+    top: 55vh;
 }
 
 @keyframes enemy {

@@ -4,7 +4,7 @@
     flex-direction: row;
 }
 
-#player {
+.player {
     height: 10vh;
     width: 5vw;
     background-color: green;
@@ -25,6 +25,10 @@
 
 .jump{
     animation: jump 500ms infinite;
+}
+
+.duck{
+    height: 5vh;
 }
 
 @keyframes enemy {

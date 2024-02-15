@@ -38,6 +38,13 @@ function checkGameOver() {
     replay = confirm('You lost!! Do you want to replay the game?');
     gameOn = false;
     clearInterval(gameInterval);
+    if (setEnemy.classList.contains("enemy1")){
+        setEnemy.classList.remove("enemy1")
+    } else if (setEnemy.classList.contains("enemy2")){
+        setEnemy.classList.remove("enemy2")
+    } else if (setEnemy.classList.contains("enemy3")){
+        setEnemy.classList.remove("enemy3")
+    }
     startColision();
   }
 

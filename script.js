@@ -18,10 +18,12 @@ const gameStart = () => {
 
 
 const jump = () => {
-    playerChar.classList.add("jump")
-    setTimeout(function(){
-        playerChar.classList.remove("jump")
-        }, 500)
+    if (!playerChar.classList.contains("jump")){
+        playerChar.classList.add("jump")
+        setTimeout(function(){
+            playerChar.classList.remove("jump")
+            }, 500)
+    }
 }
 
 

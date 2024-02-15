@@ -51,6 +51,15 @@ const spawn_timer = () => {
     setInterval(spawn_enemy, random_time)
 }
 
+const gameOver = setInterval(function () {
+    let playerHitBox = playerChar.getBoundingClientRect();
+    let enemyHitBox = setEnemy.getBoundingClientRect();
+    if (enemyHitBox.left < playerHitBox.right && enemyHitBox.left > playerHitBox.left && enemyHitBox.top < playerHitBox.bottom) {
+        alert("Game Over")
+        gameOn = false;
+    }
+}, 10)
+
 spawn_timer()
 
 addEventListener("keydown", (event) => {

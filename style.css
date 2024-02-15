@@ -1,7 +1,16 @@
-.game{
+.game {
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
+}
+
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .player {
@@ -41,27 +50,43 @@
     position: relative;
     top: 57.5vh;
     left: 25vw;
-    animation: enemy 3s ;
+    animation: enemy 3s;
     animation-timing-function: linear
 }
 
-.jump{
+.jump {
     animation: jump 500ms infinite;
 }
 
-.duck{
+.duck {
     height: 5vh;
     top: 55vh;
 }
 
 @keyframes enemy {
-    0%{left:75vw;}
-    100%{left:-15vw;}
+    0% {
+        left: 75vw;
+    }
+
+    100% {
+        left: -15vw;
+    }
 }
 
-@keyframes jump{
-    0%{top: 50vh;}
-    30%{top: 40vh;}
-    70%{top: 40vh;}
-    100%{top: 50vh;}
+@keyframes jump {
+    0% {
+        top: 50vh;
+    }
+
+    30% {
+        top: 40vh;
+    }
+
+    70% {
+        top: 40vh;
+    }
+
+    100% {
+        top: 50vh;
+    }
 }

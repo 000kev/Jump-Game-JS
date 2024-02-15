@@ -12,8 +12,30 @@
     top: 50vh;
 }
 
-#enemy {
+.enemy1 {
     height: 3vh;
+    width: 1vw;
+    background-color: red;
+    position: relative;
+    top: 57.5vh;
+    left: 25vw;
+    animation: enemy 3s infinite;
+    animation-timing-function: linear
+}
+
+.enemy2 {
+    height: 2vh;
+    width: 3vw;
+    background-color: red;
+    position: relative;
+    top: 57.5vh;
+    left: 25vw;
+    animation: enemy 3s infinite;
+    animation-timing-function: linear
+}
+
+.enemy3 {
+    height: 4vh;
     width: 1vw;
     background-color: red;
     position: relative;

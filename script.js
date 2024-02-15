@@ -1,6 +1,6 @@
 const playerChar = document.getElementById("player")
 const setEnemy = document.getElementById("enemy")
-let gameOn = true
+let gameOn = false
 let enemyTypes = ["enemy1", "enemy2", "enemy3"]
 
 

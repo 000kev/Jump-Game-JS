@@ -1,5 +1,40 @@
+.game{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
 #player {
     height: 10vh;
     width: 5vw;
     background-color: green;
+    position: relative;
+    top: 50vh;
+}
+
+#enemy {
+    height: 3vh;
+    width: 1vw;
+    background-color: red;
+    position: relative;
+    top: 57.5vh;
+    left: 25vw;
+    animation: enemy 3s infinite;
+    animation-timing-function: linear
+}
+
+.jump{
+    animation: jump 500ms infinite;
+}
+
+@keyframes enemy {
+    0%{left:75vw;}
+    100%{left:-10vw;}
+}
+
+@keyframes jump{
+    0%{top: 50vh;}
+    30%{top: 40vh;}
+    70%{top: 40vh;}
+    100%{top: 50vh;}
 }

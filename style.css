@@ -41,7 +41,7 @@
     position: relative;
     top: 57.5vh;
     left: 25vw;
-    animation: enemy 3s infinite;
+    animation: enemy 3s ;
     animation-timing-function: linear
 }
 
@@ -56,7 +56,7 @@
 
 @keyframes enemy {
     0%{left:75vw;}
-    100%{left:-10vw;}
+    100%{left:-15vw;}
 }
 
 @keyframes jump{

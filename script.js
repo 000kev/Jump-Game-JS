@@ -4,7 +4,7 @@ const score = document.querySelector('.score');
 const hiScore = document.querySelector('.hiScore');
 let scoreNum = 0;
 let gameOn = false;
-let enemyTypes = ['enemy1', 'enemy2', 'enemy3'];
+let enemyTypes = ['enemy1', 'enemy2', 'enemy3' , 'enemy4'];
 
 const spawn_enemy = () => {
     let pickEnemy = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
@@ -70,7 +70,7 @@ const scoring = setInterval(function () {
 }, 100)
 
 function startColision() {
-    gameInterval = setInterval(checkGameOver, 100);
+    gameInterval = setInterval(checkGameOver, 10);
 }
 
 startColision();

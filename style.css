@@ -14,13 +14,13 @@ header {
 }
 
 .player {
-    height: 10vh;
+    height: 8vh;
     width: 5vw;
     background-image: url(/images/rabbit.png);
     background-repeat: no-repeat;
     background-size:contain;
     position: relative;
-    top: 50.5vh;
+    top: 50vh;
     z-index: 1;
 }
 
@@ -30,7 +30,6 @@ header {
     background-color: red;
     position: relative;
     top: 57.5vh;
-    
     animation: enemy 3s ;
     animation-timing-function: linear
 }
@@ -41,7 +40,6 @@ header {
     background-color: red;
     position: relative;
     top: 57.5vh;
-    
     animation: enemy 3s ;
     animation-timing-function: linear
 }
@@ -52,7 +50,6 @@ header {
     background-color: red;
     position: relative;
     top: 57.5vh;
-    
     animation: enemy 3s;
     animation-timing-function: linear
 }
@@ -63,7 +60,6 @@ header {
     background-color: red;
     position: relative;
     top: 53vh;
-    
     animation: enemy 3s infinite;
     animation-timing-function: linear
 }
@@ -105,7 +101,14 @@ header {
     }
 }
 
+.ground{
+    position: absolute;
+    top: 50vh;
+    height: 1.5px;
+    width: 100vw;
+    background-color: rgb(97, 37, 0);
 
+}
 
  .trees{
     animation: background-motion 20s infinite;
@@ -120,9 +123,7 @@ header {
     0% {
         right: 0;
     }
-    50% {
-        right: 50%;
-    }
+   
     100% {
         right: 100%;
     }

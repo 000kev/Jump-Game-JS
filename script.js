@@ -27,12 +27,12 @@ const game_start = () => {
 };
 
 function background(){
-  let image = document.createElement("img")
+  let image = document.createElement("img");
   let randomTree = Math.floor(Math.random()*6);
   let interval = Math.floor(Math.random()*10000);
-  image.setAttribute("src",`./images/Tree${randomTree}.png`)
-  image.setAttribute("class","trees")  
-  setInterval(gameCanvas.appendChild(image), interval)
+  image.setAttribute("src",`./images/Tree${randomTree}.png`);
+  image.setAttribute("class","trees") ; 
+  setInterval(gameCanvas.appendChild(image), interval);
   setTimeout(function () {
     gameCanvas.removeChild(image);
 }, 20100);
@@ -76,9 +76,14 @@ function checkGameOver() {
 }
 
 const scoring = setInterval(function () {
+    const enemyAvatar = setEnemy.getBoundingClientRect();
+    const windowBounds = gameCanvas.getBoundingClientRect();
     if (gameOn) {
         score.innerText = scoreNum;
-        scoreNum++
+        if (enemyAvatar.right < windowBounds.left ){
+            scoreNum++
+        }
+        
         if (scoreNum >= parseInt(hiScore.innerText)) {
             hiScore.innerText = scoreNum;
         }
@@ -86,7 +91,7 @@ const scoring = setInterval(function () {
 }, 100)
 
 function startColision() {
-   // gameInterval = setInterval(checkGameOver, 10);
+   gameInterval = setInterval(checkGameOver, 10);
 }
 
 startColision();

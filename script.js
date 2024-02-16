@@ -1,3 +1,4 @@
+const gameCanvas = document.getElementById('game');
 const playerChar = document.getElementById('player');
 const setEnemy = document.getElementById('enemy');
 const score = document.querySelector('.score');
@@ -12,6 +13,7 @@ const spawn_enemy = () => {
         setEnemy.classList.add(pickEnemy);
         setTimeout(function () {
             setEnemy.classList.remove(pickEnemy);
+           background();
         }, 3000);
     }
 };
@@ -20,8 +22,22 @@ const game_start = () => {
     if (gameOn == false) {
         console.log('Game On');
         gameOn = true;
+        
     }
 };
+
+function background(){
+  let image = document.createElement("img")
+  let randomTree = Math.floor(Math.random()*6);
+  let interval = Math.floor(Math.random()*10000);
+  image.setAttribute("src",`./images/Tree${randomTree}.png`)
+  image.setAttribute("class","trees")  
+  setInterval(gameCanvas.appendChild(image), interval)
+  setTimeout(function () {
+    gameCanvas.removeChild(image);
+}, 20100);
+}
+
 
 // Game over
 function checkGameOver() {
@@ -70,7 +86,7 @@ const scoring = setInterval(function () {
 }, 100)
 
 function startColision() {
-    gameInterval = setInterval(checkGameOver, 10);
+   // gameInterval = setInterval(checkGameOver, 10);
 }
 
 startColision();

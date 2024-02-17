@@ -1,8 +1,103 @@
-body {
-    text-align: center;
+.game {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
-#board {
-    background-color: white;
-    border-bottom: 1px solid black;
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.player {
+    height: 10vh;
+    width: 5vw;
+    background-color: green;
+    position: relative;
+    top: 50vh;
+}
+
+.enemy1 {
+    height: 3vh;
+    width: 1vw;
+    background-color: red;
+    position: relative;
+    top: 57.5vh;
+    
+    animation: enemy 3s ;
+    animation-timing-function: linear
+}
+
+.enemy2 {
+    height: 2vh;
+    width: 3vw;
+    background-color: red;
+    position: relative;
+    top: 57.5vh;
+    
+    animation: enemy 3s ;
+    animation-timing-function: linear
+}
+
+.enemy3 {
+    height: 4vh;
+    width: 1vw;
+    background-color: red;
+    position: relative;
+    top: 57.5vh;
+    
+    animation: enemy 3s;
+    animation-timing-function: linear
+}
+
+.enemy4 {
+    height: 1.5vh;
+    width: 4vw;
+    background-color: red;
+    position: relative;
+    top: 53vh;
+    
+    animation: enemy 3s ;
+    animation-timing-function: linear
+}
+
+.jump {
+    animation: jump 500ms infinite;
+}
+
+.duck {
+    height: 5vh;
+    top: 55vh;
+}
+
+@keyframes enemy {
+    0% {
+        left: 75vw;
+    }
+
+    100% {
+        left: -15vw;
+    }
+}
+
+@keyframes jump {
+    0% {
+        top: 50vh;
+    }
+
+    30% {
+        top: 40vh;
+    }
+
+    70% {
+        top: 40vh;
+    }
+
+    100% {
+        top: 50vh;
+    }
 }

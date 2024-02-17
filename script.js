@@ -1,151 +1,153 @@
-const gameCanvas = document.getElementById('game');
-const playerChar = document.getElementById('player');
-const setEnemy = document.getElementById('enemy');
-const score = document.querySelector('.score');
-const hiScore = document.querySelector('.hiScore');
-let scoreNum = 0;
-let gameOn = false;
-let enemyTypes = ['enemy1', 'enemy2', 'enemy3' , 'enemy4'];
+const high_score = document.getElementById("score");
 
-const spawn_enemy = () => {
-    let pickEnemy = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
-    if (gameOn == true) {
-        setEnemy.classList.add(pickEnemy);
-        setTimeout(function () {
-            setEnemy.classList.remove(pickEnemy);
-           background();
-        }, 3000);
+let board;
+let boardWidth = 750;
+let boardHeight = 250;
+let context;
+
+let playerWidth = 50;
+let playerHeight = 90;
+let playerX = 50;
+let playerY = boardHeight - playerHeight;
+let playerImg;
+
+let player = {
+    x: playerX,
+    y: playerY,
+    width: playerWidth,
+    height: playerHeight
+}
+
+// obstacles
+const obstacles = [];
+
+let obstacle1Width = 50;
+let obstacle2Width = 76;
+let obstacle3Width = 57;
+let obstacleHeight = 50;
+let obstacleX = 700;
+let obstacleY = boardHeight - obstacleHeight;
+
+let obstacle1Img;
+let obstacle2Img;
+let obstacle3Img;
+let obstacle4Img;
+
+// game physics
+let velocityX = -8; // obstacle moving speed
+let velocityY = 0;
+let gravity = 0.4;
+
+let gameOver = false;
+let score = 0;
+
+window.onload = () => {
+    board = document.getElementById("board");
+    board.height = boardHeight;
+    board.width = boardWidth;
+
+    context = board.getContext("2d");
+    playerImg = new Image();
+    playerImg.src = "./images/player-idle.png";
+    playerImg.onload = () => {
+        context.drawImage(playerImg, player.x, player.y, player.width, player.height);
     }
-};
+    obstacle1Img = new Image();
+    obstacle2Img = new Image();
+    obstacle3Img = new Image();
 
-const game_start = () => {
-    if (gameOn == false) {
-        console.log('Game On');
-        gameOn = true;
-        
+    obstacle1Img.src = './images/slime.png';
+    obstacle2Img.src = './images/ghost.png';
+    obstacle3Img.src = './images/skull.png';
+
+
+    requestAnimationFrame(update);
+    setInterval(placeObstacle, 1000);
+
+    document.addEventListener("keydown", controlPlayer);
+}
+
+const update = () => {
+    requestAnimationFrame(update);
+    if (gameOver) return;
+
+    context.clearRect(0, 0, board.width, board.height); // refreshing the page after each obstacle
+
+    //player
+    velocityY+=gravity;
+    player.y = Math.min(player.y + velocityY, playerY); // gravity calculation
+    if (player.y === playerY) playerImg.src = "./images/player-idle.png";
+    context.drawImage(playerImg, player.x, player.y, player.width, player.height);
+
+    //obstacle
+    for (let i = 0; i < obstacles.length; i++) {
+        let obstacle = obstacles[i];
+        obstacle.x+=velocityX;
+        context.drawImage(obstacle.img, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+        if (detectCollision(player, obstacle)) {
+            if (parseInt(high_score.innerText) < score) high_score.innerText = score;
+            gameOver = true;
+            // playerImg.src = "dead";
+            playerImg.onload = () => {
+                context.drawImage(playerImg, player.x, player.y, player.width, player.height);
+            }
+        }
     }
-};
+    keepScore();
+    //scoring
+}
 
-function background(){
-  let image = document.createElement("img");
-  let randomTree = Math.floor(Math.random()*6);
-  let interval = Math.floor(Math.random()*10000);
-  image.setAttribute("src",`./images/Tree${randomTree}.png`);
-  image.setAttribute("class","trees") ; 
-  setInterval(gameCanvas.appendChild(image), interval);
-  setTimeout(function () {
-    gameCanvas.removeChild(image);
-}, 20100);
+const keepScore = () => {
+    context.fillStyle="black";
+    context.font="20px courier";
+    score++;
+    context.fillText(score, 5, 20);
+}
+
+const controlPlayer = (e) => {
+    if (gameOver) return;
+    
+    if ((e.code == "Space" || e.code =="ArrowUp") && player.y == playerY) {
+        velocityY = -10;
+        playerImg.src = "./images/player-jump.png";
+    }
+}
+
+const placeObstacle = () => {
+    if (gameOver) return;
+    let obstacle = {
+        img: null,
+        x: obstacleX,
+        y: obstacleY,
+        width: null,
+        height: obstacleHeight
+    };
+    let placeRandom = Math.random();
+
+    if (placeRandom > 0.9) {
+        obstacle.img = obstacle1Img;
+        obstacle.width = obstacle1Width;
+        obstacles.push(obstacle);
+    } else if (placeRandom > 0.7) {
+        obstacle.img = obstacle2Img;
+        obstacle.width = obstacle2Width;
+        obstacles.push(obstacle);
+    } else if (placeRandom > 0.5) {
+        obstacle.img = obstacle3Img;
+        obstacle.width = obstacle3Width;
+        obstacles.push(obstacle);
+    }
+
+    if (obstacles.length > 5) {
+        obstacles.shift(); // keep the array from growing too much
+    }
 }
 
 
-// Game over
-function checkGameOver() {
-    const playerAvatar = playerChar.getBoundingClientRect();
-    const enemyAvatar = setEnemy.getBoundingClientRect();
-
-    const gameOver = !(
-        playerAvatar.right < enemyAvatar.left ||
-        playerAvatar.left > enemyAvatar.right ||
-        playerAvatar.bottom < enemyAvatar.top ||
-        playerAvatar.top > enemyAvatar.bottom
-    );
-
-    let replay = null;
-
-    if (gameOver) {
-        score.innerText = '0';
-        scoreNum = 0
-        replay = confirm('You lost!! Do you want to replay the game?');
-        gameOn = false;
-        clearInterval(gameInterval);
-        if (setEnemy.classList.contains("enemy1")) {
-            setEnemy.classList.remove("enemy1")
-        } else if (setEnemy.classList.contains("enemy2")) {
-            setEnemy.classList.remove("enemy2")
-        } else if (setEnemy.classList.contains("enemy3")) {
-            setEnemy.classList.remove("enemy3")
-        }
-        startColision();
-    }
-
-    if (replay) {
-        gameOn = true;
-        startColision();
-    }
+const detectCollision = (obj1, obj2) => {
+    return obj2.x <= obj1.x + obj1.width -10 &&
+    obj1.x <= obj2.x + obj2.width -10 &&
+    obj1.y <= obj2.y + obj2.height &&
+     obj2.y <= obj1.y + obj1.height;
 }
-
-const scoring = setInterval(function () {
-    const enemyAvatar = setEnemy.getBoundingClientRect();
-    const windowBounds = gameCanvas.getBoundingClientRect();
-    if (gameOn) {
-        score.innerText = scoreNum;
-        if (enemyAvatar.right < windowBounds.left ){
-            scoreNum++
-        }
-        
-        if (scoreNum >= parseInt(hiScore.innerText)) {
-            hiScore.innerText = scoreNum;
-        }
-    }
-}, 100)
-
-function startColision() {
-   gameInterval = setInterval(checkGameOver, 10);
-}
-
-startColision();
-
-const jump = () => {
-    if (
-        !playerChar.classList.contains('jump') &&
-        !playerChar.classList.contains('duck')
-    ) {
-        playerChar.classList.add('jump');
-        setTimeout(function () {
-            playerChar.classList.remove('jump');
-        }, 500);
-    }
-};
-
-const duck = () => {
-    if (
-        !playerChar.classList.contains('duck') &&
-        !playerChar.classList.contains('jump')
-    ) {
-        playerChar.classList.add('duck');
-        setTimeout(function () {
-            playerChar.classList.remove('duck');
-        }, 500);
-    }
-};
-
-const spawn_timer = () => {
-    const min = 3001;
-    const max = 5000;
-    const random_time = Math.floor(Math.random() * (max - min)) + min;
-    setInterval(spawn_enemy, random_time);
-};
-
-spawn_timer();
-
-addEventListener('keydown', (event) => {
-    if (
-        (event.code == 'Space' && gameOn == true) ||
-        (event.code == 'ArrowUp' && gameOn == true)
-    ) {
-        jump();
-    }
-});
-
-addEventListener('keydown', (event) => {
-    if (event.code == 'ArrowDown' && gameOn == true) {
-        duck();
-    }
-});
-
-addEventListener('keydown', (event) => {
-    if (event.code == 'Space') {
-        game_start();
-    }
-});

@@ -97,6 +97,9 @@ const update = () => {
             playerImg.onload = () => {
                 context.drawImage(playerImg, player.x, player.y, player.width, player.height);
             }
+            if (confirm("Would you like to try again?")) {
+                location.reload();
+            } else alert("Until next time, young Wizard!");
         }
     }
     keepScore();

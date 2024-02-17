@@ -20,7 +20,6 @@ let player = {
   height: playerHeight,
 };
 
-// obstacles
 const obstacles = [];
 
 let obstacle1Width = 50;
@@ -35,8 +34,7 @@ let obstacle2Img;
 let obstacle3Img;
 let obstacle4Img;
 
-// game physics
-let velocityX = -8; // obstacle moving speed
+let velocityX = -8; 
 let velocityY = 0;
 let gravity = 0.4;
 
@@ -53,15 +51,14 @@ const update = () => {
   requestAnimationFrame(update);
   if (gameOver) return;
 
-  context.clearRect(0, 0, board.width, board.height); // refreshing the page after each obstacle
+  context.clearRect(0, 0, board.width, board.height);
 
-  //player
   velocityY += gravity;
-  player.y = Math.min(player.y + velocityY, playerY); // gravity calculation
+  player.y = Math.min(player.y + velocityY, playerY); 
   if (player.y === playerY) playerImg.src = "./images/player-idle.png";
   context.drawImage(playerImg, player.x, player.y, player.width, player.height);
 
-  //obstacles
+
   for (let i = 0; i < obstacles.length; i++) {
     let obstacle = obstacles[i];
     obstacle.x += velocityX * speed;
@@ -77,41 +74,34 @@ const update = () => {
       if (parseInt(high_score.innerText) < score + 1)
         high_score.innerText = score + 1;
       gameOver = true;
-      // playerImg.src = "dead";
-      playerImg.onload = () => {
-        context.drawImage(
-          playerImg,
-          player.x,
-          player.y,
-          player.width,
-          player.height
-        );
-      };
       if (confirm("Would you like to try again?")) {
         location.reload();
       } else alert("Until next time, young Wizard!");
     }
+
+    if (obstacle.x < playerX) {
+      score++;
+      obstacles.shift();
+    }
   }
   keepScore();
-  //scoring
 };
 
 const keepScore = () => {
   context.fillStyle = "black";
   context.font = "20px courier";
-  score++;
   context.fillText(score, 5, 20);
+  high_score.innerText = score;
+  
 };
 
 const controlPlayer = (e) => {
   if (gameOver) return;
 
-  // jump
   if ((e.code == "Space" || e.code == "ArrowUp") && player.y == playerY) {
     velocityY = -10;
     playerImg.src = "./images/player-jump.png";
   }
-  // duck
 };
 
 const placeObstacle = () => {
@@ -128,6 +118,7 @@ const placeObstacle = () => {
   if (placeRandom > 0.9) {
     obstacle.img = obstacle1Img;
     obstacle.width = obstacle1Width;
+
     obstacles.push(obstacle);
   } else if (placeRandom > 0.6) {
     obstacle.img = obstacle2Img;
@@ -137,10 +128,6 @@ const placeObstacle = () => {
     obstacle.img = obstacle3Img;
     obstacle.width = obstacle3Width;
     obstacles.push(obstacle);
-  }
-
-  if (obstacles.length > 5) {
-    obstacles.shift(); // keep the array from growing too much
   }
 };
 

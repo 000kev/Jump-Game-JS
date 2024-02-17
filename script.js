@@ -1,14 +1,16 @@
 const high_score = document.getElementById("score");
+const board = document.getElementById("board");
+const context = board.getContext("2d");
 
-let board;
-let boardWidth = 750;
-let boardHeight = 250;
-let context;
+const BOARD_WIDTH = 750;
+const BOARD_HEIGHT = 250;
+
+let SPEED = 1;
 
 let playerWidth = 50;
 let playerHeight = 90;
 let playerX = 50;
-let playerY = boardHeight - playerHeight;
+let playerY = BOARD_HEIGHT - playerHeight;
 let playerImg;
 
 let player = {
@@ -26,7 +28,7 @@ let obstacle2Width = 76;
 let obstacle3Width = 57;
 let obstacleHeight = 50;
 let obstacleX = 700;
-let obstacleY = boardHeight - obstacleHeight;
+let obstacleY = BOARD_HEIGHT - obstacleHeight;
 
 let obstacle1Img;
 let obstacle2Img;
@@ -42,11 +44,11 @@ let gameOver = false;
 let score = 0;
 
 window.onload = () => {
-    board = document.getElementById("board");
-    board.height = boardHeight;
-    board.width = boardWidth;
+    
+    board.height = BOARD_HEIGHT;
+    board.width = BOARD_WIDTH;
 
-    context = board.getContext("2d");
+    
     playerImg = new Image();
     playerImg.src = "./images/player-idle.png";
     playerImg.onload = () => {
@@ -63,6 +65,9 @@ window.onload = () => {
 
     requestAnimationFrame(update);
     setInterval(placeObstacle, 1000);
+    setInterval(() => {
+        SPEED = SPEED * 1.1;
+    }, 5000)
 
     document.addEventListener("keydown", controlPlayer);
 }
@@ -79,14 +84,14 @@ const update = () => {
     if (player.y === playerY) playerImg.src = "./images/player-idle.png";
     context.drawImage(playerImg, player.x, player.y, player.width, player.height);
 
-    //obstacle
+    //obstacles
     for (let i = 0; i < obstacles.length; i++) {
         let obstacle = obstacles[i];
-        obstacle.x+=velocityX;
+        obstacle.x+=velocityX * SPEED;
         context.drawImage(obstacle.img, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
 
         if (detectCollision(player, obstacle)) {
-            if (parseInt(high_score.innerText) < score) high_score.innerText = score;
+            if (parseInt(high_score.innerText) < score+1) high_score.innerText = score+1;
             gameOver = true;
             // playerImg.src = "dead";
             playerImg.onload = () => {
@@ -108,10 +113,12 @@ const keepScore = () => {
 const controlPlayer = (e) => {
     if (gameOver) return;
     
+    // jump
     if ((e.code == "Space" || e.code =="ArrowUp") && player.y == playerY) {
         velocityY = -10;
         playerImg.src = "./images/player-jump.png";
     }
+    // duck
 }
 
 const placeObstacle = () => {
@@ -129,11 +136,11 @@ const placeObstacle = () => {
         obstacle.img = obstacle1Img;
         obstacle.width = obstacle1Width;
         obstacles.push(obstacle);
-    } else if (placeRandom > 0.7) {
+    } else if (placeRandom > 0.6) {
         obstacle.img = obstacle2Img;
         obstacle.width = obstacle2Width;
         obstacles.push(obstacle);
-    } else if (placeRandom > 0.5) {
+    } else if (placeRandom > 0.3) {
         obstacle.img = obstacle3Img;
         obstacle.width = obstacle3Width;
         obstacles.push(obstacle);

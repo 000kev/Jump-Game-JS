@@ -13,6 +13,9 @@ let playerX = 50;
 let playerY = BOARD_HEIGHT - playerHeight;
 let playerImg;
 
+let moonImg;
+// let cloudsImg;
+
 let player = {
   x: playerX,
   y: playerY,
@@ -56,7 +59,9 @@ const update = () => {
   velocityY += gravity;
   player.y = Math.min(player.y + velocityY, playerY); 
   if (player.y === playerY) playerImg.src = "./images/player-idle.png";
+  
   context.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  context.drawImage(moonImg, 500, 0, 162, 162);
 
 
   for (let i = 0; i < obstacles.length; i++) {
@@ -103,6 +108,12 @@ const controlPlayer = (e) => {
     playerImg.src = "./images/player-jump.png";
   }
 };
+
+// const placeBackdrop = () => {
+//   if (gameOver) return;
+//   let placeRandom = Math.random();
+
+// }
 
 const placeObstacle = () => {
   if (gameOver) return;
@@ -160,16 +171,37 @@ const main = () => {
         player.height
       );
     };
+
+    moonImg = new Image();
+    moonImg.src = "./images/moon.png";
+    moonImg.onload = () => {
+      context.drawImage(
+        moonImg,
+        100,
+        100,
+        162,
+        162
+      );
+    };
+
+
     obstacle1Img = new Image();
     obstacle2Img = new Image();
     obstacle3Img = new Image();
+
+    
+    // cloudsImg = new Image();
+    // cloudsImg.src = "./images/clouds.png";
 
     obstacle1Img.src = "./images/slime.png";
     obstacle2Img.src = "./images/ghost.png";
     obstacle3Img.src = "./images/skull.png";
 
+    
+
     requestAnimationFrame(update);
     setInterval(placeObstacle, 1000);
+    // setInterval (placeBackdrop, 1000);
     setInterval(() => {
       speed = speed * 1.1;
     }, 5000);
